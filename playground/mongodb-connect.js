@@ -5,11 +5,11 @@ MongoClient.connect('mongodb://localhost:27017/TodosApp', {useNewUrlParser: true
         return console.log('Unable to connect to the Mondo DB server', err);
     }
 
-    const db = client.db('Todos');
+    const db = client.db('TodoApp');
     console.log('Successfully connected to the MondoDB Server!');
 
     // db.collection('Todos').insertOne({
-    //     text: 'Something to do Again',
+    //     text: 'Do something',
     //     completed: false
     // }, (err, result) => {
     //     if (err) {
