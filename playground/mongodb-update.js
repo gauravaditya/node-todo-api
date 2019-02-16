@@ -9,12 +9,7 @@ MongoClient.connect('mongodb://localhost:27017/TodosApp', {useNewUrlParser: true
 
     console.log('Successfully connected to the mongoDB Server!');
 
-    // const db = client.db('TodoApp');
+    const db = client.db('TodoApp');
 
-    // db.collection('Todos').find().toArray().then((docs) => {
-    //     console.log(docs);
-    // }, (err) => {
-    //     console.log('Unable to fetch Todo', err);
-    // });
-    // client.close();
+    client.close();
 });
