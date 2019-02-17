@@ -49,7 +49,28 @@ app.get('/todos/:id', (req, res) => {
         res.status(404).send('Unable to Get Todo');
     });
 
-})
+});
+
+app.delete('/todos/:id', (req, res) => {
+    const id = req.params.id;
+
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send('Invalid Id');
+    }
+
+    Todo.findByIdAndRemove(id).then((todo) => {
+        if(!todo) {
+            return res.status(404).send('No Todo by this Id');
+        }
+
+        res.status(200).send({
+            todo,
+            message: 'Successfully deleted!'
+        });
+    }).catch((err) => {
+        res.status(400).status('Unable to Delete');
+    });
+});
 
 app.listen(`${port}`, () =>{
     console.log('Server started on port 3000');

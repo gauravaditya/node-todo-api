@@ -19,7 +19,7 @@ const todos = [
 beforeEach((done) => {
     Todo.deleteMany({}).then(() => {
         return Todo.insertMany(todos);
-    }).then(() => done());
+    }).then(() => done(), (err) => done(err));
 });
 
 describe('POST /todos', () => {
@@ -114,5 +114,47 @@ describe('GET /todos/:id', () => {
             //     expect(res.body).toEqual('Invalid Id');
             // })
             .end(done);
+    });
+});
+
+describe('DELETE /todos', () => {
+
+    it('should delete todo by given ID', (done) => {
+        const id = todos[0]._id.toHexString();
+
+        request(app)
+            .delete(`/todos/${id}`)
+            .expect(200)
+            .expect((res) => {
+                expect(res.body).toMatchObject({message: 'Successfully deleted!'});
+            })
+            .end((err, res) => {
+                Todo.findById(id).then((todo) => {
+                    expect(todo).toBeNull();
+                    done();
+                }, (err) => {
+                    done(err);
+                });
+            });
+    });
+
+    it('should return 404 if todo not found', (done) => {
+        const id = new ObjectID().toHexString();
+        request(app)
+            .delete(`/todos/${id}`)
+            .expect(404)
+            .expect((res) => {
+                expect(res.body).toMatchObject({});
+            }).end(done);
+    });
+
+    it('should return 404 if Id Invalid', (done) => {
+        const id = 1234567;
+        request(app)
+            .delete(`/todos/${id}`)
+            .expect(404)
+            .expect((res) => {
+                expect(res.body).toMatchObject({});
+            }).end(done);
     });
 });
