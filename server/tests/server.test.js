@@ -1,3 +1,5 @@
+require('../config/config');
+
 const request = require('supertest');
 const expect = require('expect');
 const {ObjectID} = require('mongodb');
@@ -113,9 +115,9 @@ describe('GET /todos/:id', () => {
         request(app)
             .get(`/todos/${id}`)
             .expect(404)
-            // .expect((res) => {
-            //     expect(res.body).toEqual('Invalid Id');
-            // })
+            .expect((res) => {
+                expect(res.body).toEqual('Invalid Id');
+            })
             .end(done);
     });
 });
